@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0px 0px 200px 0px;
+        
+            padding: 0;
+            background: #f4f4f4;
+            color: #333;
+        }
+
+        header {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 30px 20px;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.2rem;
+        }
+
+        section {
+            max-width: 800px;
+            margin: 40px auto;
+            margin-bottom: 10px;
+            padding: 20px;
+            background: #ffffff;
+            height: fit-content;
+            border-radius: 12px;
+            box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        h2 {
+            color: #444;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+#section_form{
+padding-bottom: 70px;
+}
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+           
+        }
+
+        input, textarea, button {
+            font-size: 1rem;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            outline: none;
+            background: #fafafa;
+            color: #333;
+            transition: all 0.3s ease;
+        }
+
+        input:hover, textarea:hover {
+            background: #f5f5f5;
+            box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        input:focus, textarea:focus {
+            border: 1px solid #333;
+            background: #fff;
+            box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        textarea {
+            resize: none;
+            height: 120px;
+        }
+
+        button {
+            background: black;
+            color: white;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            background: #444;
+            transform: scale(1.05);
+            box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        button:active {
+            background: #222;
+            transform: scale(0.98);
+        }
+
+        .form-heading {
+            font-size: 1.2rem;
+            color: #444;
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        input::placeholder, textarea::placeholder {
+            color: #aaa;
+            font-style: italic;
+        }
+
+        #responseMessage {
+            margin-top: 15px;
+            font-weight: bold;
+            color: #28a745;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+  <nav id="desktop-nav">
+    <div class="logo"  onclick="location.href='./index.html'">Mohit Bisht</div>
+    <div>
+      <ul class="nav-links">
+        <li><a href="./index.html">About</a></li>
+        <li><a href="./skills.html">Skills</a></li>
+        <li><a href="./project.html">Projects</a></li>
+        <li><a href="./contact.html">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+  <nav id="hamburger-nav">
+    <div class="logo">Mohit Bisht</div>
+    <div class="hamburger-menu">
+      <div class="hamburger-icon" onclick="toggleMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <div class="menu-links">
+        <li><a href="#about" onclick="toggleMenu()">About</a></li>
+
+        <li><a href="#projects" onclick="toggleMenu()">Projects</a></li>
+        <li><a href="#contact" onclick="toggleMenu()">Contact</a></li>
+      </div>
+    </div>
+  </nav>
+  <section id="contact">
+    <p class="section__text__p1">Get in Touch</p>
+    <h1 class="title">Contact Me</h1>
+    <div class="contact-info-upper-container">
+      <div class="contact-info-container">
+        <img
+          src="email.png"
+          alt="Email icon"
+          class="icon contact-icon email-icon"
+        />
+        <p><a href="mailto:examplemail@gmail.com">mohitbisht865@gmail.com</a></p>
+      </div>
+      <div class="contact-info-container">
+        <img
+          src="linkedin.png"
+          alt="LinkedIn icon"
+          class="icon contact-icon"
+        />
+        <p><a href="https://www.linkedin.com">LinkedIn</a></p>
+      </div>
+    </div>
+  </section>
+  <footer>
+    <section id="section_form">
+        <form id="contactForm" action="http://localhost:8000" method="POST">
+            <input type="text" name="name" placeholder="Your Name" required />
+            <input type="email" name="email" placeholder="Your Email" required />
+            <textarea name="message" placeholder="Write your message..." required></textarea>
+            <button id="submit" type="submit">Send Message</button>
+        </form>
+        
+        <p id="responseMessage"></p>
+    </section>
+    <script>
+        document
+            .getElementById("contactForm")
+            .addEventListener("submit", async function (event) {
+                event.preventDefault(); // Stop form from submitting traditionally
+    
+                const formData = new FormData(this);
+    
+                try {
+                    // Send form data to backend
+                    const response = await fetch("http://localhost:8000/submit", {
+                        method: "POST",
+                        body: new URLSearchParams(formData),
+                    });
+    
+                    // Get response text
+                    const result = await response.text();
+    
+                    // Display the result and thank-you message
+                    document.getElementById("responseMessage").textContent = 
+                        result + " Thank you for your response!";
+                    document.getElementById("responseMessage").style.color = "green";
+                } catch (error) {
+                    // Display error message
+                    document.getElementById("responseMessage").textContent = 
+                        "Error submitting the form. Please check the server connection.";
+                    document.getElementById("responseMessage").style.color = "red";
+                    console.error("Submission error:", error); // Log error for debugging
+                }
+            });
+    </script>
+    
+    
+</body>
+</html>
